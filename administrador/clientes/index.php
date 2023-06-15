@@ -42,5 +42,5 @@
         </div>
         
     </div>
-
+hola 
     <?php include("../../template/footer.php"); ?>
