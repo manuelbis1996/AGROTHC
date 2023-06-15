@@ -22,8 +22,9 @@ $url_base="http://localhost/AGROTHC/"
 
     <nav class="navbar navbar-expand navbar-light bg-light">
         <ul class="nav navbar-nav">
+
             <li class="nav-item">
-                <a class="nav-link active" href="#" aria-current="page">Facturacion<span class="visually-hidden">(current)</span></a>
+                <a class="nav-link active" href="<?php echo $url_base; ?>" aria-current="page">AGROTHC<span class="visually-hidden">(current)</span></a>
             </li>
 
             <li class="nav-item">
@@ -39,8 +40,13 @@ $url_base="http://localhost/AGROTHC/"
                 </div>
             </li>
 
+
             <li class="nav-item">
-                <a class="nav-link " href="#">Cerrar sesion</a>
+                <a class="nav-link active" href="" aria-current="page">Facturacion<span class="visually-hidden">(current)</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link " href="">Cerrar sesion</a>
             </li>
         </ul>
     </nav>
