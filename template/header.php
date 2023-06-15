@@ -38,7 +38,7 @@ $url_base="http://localhost/AGROTHC/"
                     </ul>
                 </div>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link " href="#">Cerrar sesion</a>
             </li>
