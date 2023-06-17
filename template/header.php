@@ -36,6 +36,7 @@ $url_base="http://localhost/AGROTHC/"
                         <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/articulos">Articulos</a></li>
                         <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/clientes">Clientes</a></li>
                         <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/empleados">Empleados</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/puesto">Puesto</a></li>
                     </ul>
                 </div>
             </li>
