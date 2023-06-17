@@ -1,8 +1,5 @@
 <?php include("../../template/header.php"); ?>
     <br/>
-
-    
-    <br/>
     <h5>Cliente</h5>
     <div class="card">
         <div class="card-header">

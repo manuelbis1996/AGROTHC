@@ -10,7 +10,7 @@ if(isset( $_GET['txtID'] )){
     header("Location:index.php");
 }
 
-// codigo para agregar registros
+// codigo para mostrar registros
 $sentancia=$conexion->prepare("SELECT * FROM `tbl_puesto`");
 $sentancia->execute();
 $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);

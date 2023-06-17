@@ -1,3 +1,30 @@
+<?php 
+
+include("../../bd.php");
+
+if($_POST){
+print_r($_POST);
+
+//Recoletamos datos de metodo post
+$tipo=(isset($_POST["tipo"])?$_POST["tipo"]:"");
+$cantidad=(isset($_POST["cantidad"])?$_POST["cantidad"]:"");
+$costo=(isset($_POST["costo"])?$_POST["costo"]:"");
+$fecha=(isset($_POST["fecha"])?$_POST["fecha"]:"");
+//preparar la inserccion de datos
+$sentencia=$conexion->prepare("INSERT INTO tbl_articulos(id,tipo,cantidad,costo,fecha)
+VALUES (null, :tipo,:cantidad ,:costo ,:fecha ) ");
+//asignado los valores que vienen del metodo post (Los qie vienes del formulario)
+$sentencia->bindParam(":tipo",$tipo);
+$sentencia->bindParam(":cantidad",$cantidad);
+$sentencia->bindParam(":costo",$costo);
+$sentencia->bindParam(":fecha",$fecha);
+$sentencia->execute();
+header("Location:index.php");
+}
+
+
+?>
+
 <?php include("../../template/header.php"); ?>
     <br/>
 
@@ -16,7 +43,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="cantidad" class="form-label">Cantidad</label>
+                    <label for="tipo" class="form-label">Cantidad</label>
                     <input type="text"
                     class="form-control" name="cantidad" idapellido aria-describedby="helpId" placeholder="Cantidad">
                 </div>
@@ -29,9 +56,9 @@
                 </div>
 
                 <div class="mb-3">      
-                    <label for="fechaingroso" class="form-label">Fecha de ingreso</label>
+                    <label for="fecha" class="form-label">Fecha de ingreso</label>
                     <input type="date"
-                    class="form-control" name="fechaingroso" id="fechaingroso" aria-describedby="helpId" placeholder="">
+                    class="form-control" name="fecha" id="fecha" aria-describedby="helpId" placeholder="">
                 </div>
 
                 <button type="submit" class="btn btn-success">Agregar articulos</button>

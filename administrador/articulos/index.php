@@ -1,3 +1,22 @@
+<?php
+include("../../bd.php");
+
+//codigo para borrar registros
+if(isset( $_GET['txtID'] )){
+    $txtID=(isset($_GET['txtID']))?$_GET['txtID']:"";
+    $sentencia=$conexion->prepare("DELETE FROM tbl_articulos WHERE id=:id");
+    $sentencia->bindParam(":id",$txtID);
+    $sentencia->execute();
+    header("Location:index.php");
+}
+
+// codigo para mostrar registros
+$sentancia=$conexion->prepare("SELECT * FROM `tbl_articulos`");
+$sentancia->execute();
+$lista_tbl_articulos=$sentancia->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <?php include("../../template/header.php"); ?>
     <br/>
 
@@ -22,14 +41,21 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <?php foreach ($lista_tbl_articulos as $registro) {?>
+
                         <tr class="">
-                            <td scope="row">R1C1</td>
-                            <td>R1C2</td>
-                            <td>R1C3</td>
-                            <td>R1C3</td>
-                            <td><input name="btneditar" id="btneditar" class="btn btn-primary" type="button" value="Editar">|
-                            <input name="btnBorrar" id="btnBorrar" class="btn btn-info" type="button" value="Borrar"></td>
-                        </tr>
+                            <td scope="row"><?php echo $registro['id'] ?></td>
+                            <td><?php echo $registro['tipo'] ?></td>
+                            <td><?php echo $registro['cantidad'] ?></td>
+                            <td><?php echo $registro['costo'] ?></td>
+                            <td>
+                                <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id'] ?>" role="button">Editar</a>
+
+                                <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id'] ?>" role="button">Borrar</a>
+                            </td>
+                        <?php } ?>
+
                     </tbody>
                 </table>
             </div>

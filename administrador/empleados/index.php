@@ -3,7 +3,6 @@
     <h5>Empleados</h5>
     <div class="card">
         <div class="card-header">
-        
             <a name="" id="" class="btn btn-primary" 
             href="crear.php" role="button">
             Agregar
@@ -29,13 +28,9 @@
                             <a name="" id="" class="btn btn-info" href="#" role="button">Editar</a>
                             <a name="" id="" class="btn btn-danger" href="#" role="button">Eliminar</a> </td>
                         </tr>
-                        
                     </tbody>
                 </table>
             </div>
-            
         </div>
-        
     </div>
-
-    <?php include("../../template/footer.php"); ?>
+<?php include("../../template/footer.php"); ?>
