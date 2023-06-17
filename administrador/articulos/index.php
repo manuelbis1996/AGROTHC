@@ -4,12 +4,10 @@
     <h5>Articulos</h5>
     <div class="card">
         <div class="card-header"> 
-
             <a name="" id="" class="btn btn-primary" 
             href="crear.php" role="button">
             Agregar
             </a> 
-            
         </div>
         <div class="card-body">
             <div class="table-responsive-sm">
@@ -32,7 +30,6 @@
                             <td><input name="btneditar" id="btneditar" class="btn btn-primary" type="button" value="Editar">|
                             <input name="btnBorrar" id="btnBorrar" class="btn btn-info" type="button" value="Borrar"></td>
                         </tr>
-                        
                     </tbody>
                 </table>
             </div>
