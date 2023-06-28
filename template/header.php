@@ -43,7 +43,7 @@ $url_base="http://localhost/AGROTHC/"
 
 
             <li class="nav-item">
-                <a class="nav-link active" href="" aria-current="page">Facturacion<span class="visually-hidden">(current)</span></a>
+                <a class="nav-link active" href="<?php echo $url_base; ?> ../facturar.php" aria-current="page">Facturacion<span class="visually-hidden">(current)</span></a>
             </li>
 
             <li class="nav-item">
