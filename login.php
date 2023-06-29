@@ -1,3 +1,42 @@
+<?php 
+
+session_start();
+
+if($_POST){
+
+    include("bd.php");
+
+    // codigo para mostrar registros
+$sentencia=$conexion->prepare("SELECT *,count(*) as n_usuario
+FROM `usuario` 
+WHERE usuario=:usuario
+AND clave=:clave"
+);
+
+$usuario=$_POST["usuario"];
+$clave=$_POST["clave"];
+
+$sentencia->bindParam(":usuario",$usuario);
+$sentencia->bindParam(":clave",$clave);
+$sentencia->execute();
+
+$registro=$sentencia->fetch(PDO::FETCH_LAZY);
+
+if($registro["n_usuario"]>0){
+    $_SESSION["usuario"]=$registro["usuario"];
+    $_SESSION["logueado"]=true;
+    header("location:index.php");
+}
+
+else{
+    $mensaje="Error: El usuarios o clave son incorrectos";
+}
+
+
+}
+
+?>
+
 
 <!doctype html>
 <html lang="en">
@@ -19,14 +58,52 @@
         <!-- place navbar here -->
     </header>
     <main class="container">
-        <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-4">
+                
+            </div>
             
-        </div>
-        
-        <div class="col-md-4">
-            Login
-        </div>
+            <div class="col-md-4">
+            <br/><br/>
+                <div class="card">
+                    <div class="card-header">
+                        Login
+                    </div>
+                    <div class="card-body">
 
+                        <?php if(isset($mensaje)){ ?>
+
+                            <div class="alert alert-danger" role="alert">
+                                <strong> <?php echo $mensaje; ?> </strong> 
+                            </div>
+                        
+                        <?php } ?>
+                        
+                        <form action="" method="post">
+
+                            <div class="mb-3">
+                                <label for="usuario" class="form-label">Usuario:</label>
+                                <input type="text"
+                                class="form-control" name="usuario" id="usuario" aria-describedby="helpId" placeholder="Escriba su usuario">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="clave" class="form-label">Clave:</label>
+                                <input type="password"
+                                class="form-control" name="clave" id="clave" aria-describedby="helpId" placeholder="Escriba su clave">
+                        
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Entrar al sistema</button>
+
+
+
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
     </main>
     <footer>
         <!-- place footer here -->
