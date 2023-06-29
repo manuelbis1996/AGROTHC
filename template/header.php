@@ -33,17 +33,18 @@ $url_base="http://localhost/AGROTHC/"
                         Administracion
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/articulos">Articulos</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/producto">Producto</a></li>
                         <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/clientes">Clientes</a></li>
-                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/empleados">Empleados</a></li>
-                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/puesto">Puesto</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/rol">Rol</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/proveedor">Proveedor</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $url_base; ?>administrador/usuario">Usuario</a></li>
                     </ul>
                 </div>
             </li>
 
 
             <li class="nav-item">
-                <a class="nav-link active" href="<?php echo $url_base; ?> ../facturar.php" aria-current="page">Facturacion<span class="visually-hidden">(current)</span></a>
+                <a class="nav-link active" href="<?php echo $url_base; ?>facturar.php" aria-current="page">Facturacion<span class="visually-hidden">(current)</span></a>
             </li>
 
             <li class="nav-item">

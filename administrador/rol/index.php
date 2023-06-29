@@ -4,14 +4,14 @@ include("../../bd.php");
 //codigo para borrar registros
 if(isset( $_GET['txtID'] )){
     $txtID=(isset($_GET['txtID']))?$_GET['txtID']:"";
-    $sentencia=$conexion->prepare("DELETE FROM tbl_puesto WHERE id=:id");
-    $sentencia->bindParam(":id",$txtID);
+    $sentencia=$conexion->prepare("DELETE FROM rol WHERE idrol=:idrol");
+    $sentencia->bindParam(":idrol",$txtID);
     $sentencia->execute();
     header("Location:index.php");
 }
 
 // codigo para mostrar registros
-$sentancia=$conexion->prepare("SELECT * FROM `tbl_puesto`");
+$sentancia=$conexion->prepare("SELECT * FROM rol ");
 $sentancia->execute();
 $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);
 
@@ -21,7 +21,7 @@ $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);
 <?php include("../../template/header.php"); ?>
     <br/>
 
-    <h5>Puesto</h5>
+    <h5>Rol</h5>
     <div class="card">
         <div class="card-header"> 
 
@@ -48,13 +48,13 @@ $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);
                     
                         <tr class="">
 
-                            <td scope="row"><?php echo $registro['id'] ?></td>
-                            <td scope="row"><?php echo $registro['descripción'] ?></td>
+                            <td scope="row"><?php echo $registro['idrol'] ?></td>
+                            <td scope="row"><?php echo $registro['rol'] ?></td>
 
                             <td>
-                                <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['id'] ?>" role="button">Editar</a>
+                                <a class="btn btn-info" href="editar.php?txtID=<?php echo $registro['idrol'] ?>" role="button">Editar</a>
 
-                                <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id'] ?>" role="button">Borrar</a>
+                                <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['idrol'] ?>" role="button">Borrar</a>
                             </td>
                             
                         </tr>

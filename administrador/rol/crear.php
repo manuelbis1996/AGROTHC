@@ -7,7 +7,7 @@ print_r($_POST);
 //Recoletamos datos de metodo post
 $puesto=(isset($_POST["puesto"])?$_POST["puesto"]:"");
 //preparar la inserccion de datos
-$sentencia=$conexion->prepare("INSERT INTO tbl_puesto(id,descripción)
+$sentencia=$conexion->prepare("INSERT INTO rol(idrol,rol)
 VALUES (null, :puesto) ");
 //asignado los valores que vienen del metodo post (Los qie vienes del formulario)
 $sentencia->bindParam(":puesto",$puesto);
@@ -23,7 +23,7 @@ header("Location:index.php");
 
     <div class="card">
         <div class="card-header">
-            Datos del puesto
+            Datos del rol
         </div>
 
         <div class="card-body">

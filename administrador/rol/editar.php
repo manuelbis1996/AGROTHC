@@ -6,12 +6,12 @@ if(isset( $_GET['txtID'] )){
     //pasamos ese dato ala variable
     $txtID=(isset($_GET['txtID']))?$_GET['txtID']:"";
     //realizamos una sentecias para buscar el puesto por la id
-    $sentencia=$conexion->prepare("SELECT * FROM tbl_puesto WHERE id=:id");
-    $sentencia->bindParam(":id",$txtID);
+    $sentencia=$conexion->prepare("SELECT * FROM rol WHERE idrol=:idrol");
+    $sentencia->bindParam(":idrol",$txtID);
     $sentencia->execute();
     //aqui sacamos la descricion del puesto y lo pasamos ala variable
     $resgistro= $sentencia->fetch(PDO::FETCH_LAZY);
-    $nombredelpuesto=$resgistro["descripción"];
+    $nombredelpuesto=$resgistro["rol"];
 }
 
 if($_POST){
@@ -21,11 +21,11 @@ if($_POST){
     $puesto=(isset($_POST["puesto"])?$_POST["puesto"]:"");
     $txtID=(isset($_POST['txtID']))?$_POST['txtID']:"";
     //preparar la inserccion de datos
-    $sentencia=$conexion->prepare("UPDATE tbl_puesto SET descripción=:puesto
-    WHERE id=:id");
+    $sentencia=$conexion->prepare("UPDATE rol SET rol=:rol
+    WHERE idrol=:idrol");
     //asignado los valores que vienen del metodo post (Los qie vienes del formulario)
-    $sentencia->bindParam(":id",$txtID);
-    $sentencia->bindParam(":puesto",$puesto);
+    $sentencia->bindParam(":idrol",$txtID);
+    $sentencia->bindParam(":rol",$puesto);
     $sentencia->execute();
     header("Location:index.php");
     }
@@ -38,7 +38,7 @@ if($_POST){
 
     <div class="card">
         <div class="card-header">
-            Datos del puesto
+            Datos del rol
         </div>
 
         <div class="card-body">
