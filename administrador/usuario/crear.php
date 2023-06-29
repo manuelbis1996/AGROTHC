@@ -41,7 +41,7 @@ $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="card">
         <div class="card-header">
-            Datos del articulos
+            Agregar usuario
         </div>
 
         <div class="card-body">
@@ -69,7 +69,7 @@ $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);
                 <div class="mb-3">
                     <label for="clave" class="form-label">Clave
                     </label>
-                    <input type="text"
+                    <input type="password"
                         class="form-control" name="clave" id="clave" aria-describedby="helpId" placeholder="clave">   
                 </div>
 
@@ -87,7 +87,7 @@ $lista_tbl_puesto=$sentancia->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 
 
-                <button type="submit" class="btn btn-success">Agregar articulos</button>
+                <button type="submit" class="btn btn-success">Agregar usuarios</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

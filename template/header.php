@@ -1,5 +1,6 @@
 <?php
-$url_base="http://localhost/AGROTHC/"
+$url_base="http://localhost/AGROTHC/";
+session_start();
 
 ?>
 
@@ -48,7 +49,7 @@ $url_base="http://localhost/AGROTHC/"
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="">Cerrar sesion</a>
+                <a class="nav-link " href="<?php echo $url_base; ?>cerrar.php">Cerrar sesion</a>
             </li>
         </ul>
     </nav>
