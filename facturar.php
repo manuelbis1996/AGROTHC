@@ -1,211 +1,170 @@
+
+<?php include("template/header.php"); ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<title>Facturación</title>
+<script>
+  $(document).ready(function() {
+    var total = 0;
+    var factura = [];
+
+    // Obtener el precio del producto seleccionado
+    function obtenerPrecioProducto(idProducto) {
+      $.ajax({
+        url: 'obtener_precio_producto.php',
+        method: 'POST',
+        data: { idProducto: idProducto },
+        dataType: 'json',
+        success: function(response) {
+          if (response.success) {
+            var precio = response.precio;
+            $('#precio').val(precio);
+          } else {
+            console.log(response.message);
+          }
+        },
+        error: function(xhr, status, error) {
+          console.log(error);
+        }
+      });
+    }
+
+    function actualizarTotal() {
+      var nuevoTotal = 0;
+      for (var i = 0; i < factura.length; i++) {
+        nuevoTotal += factura[i].subtotal;
+      }
+      total = nuevoTotal;
+      $('#total').text(total.toFixed(2));
+    }
+
+    function cancelarProducto(index) {
+      if (index >= 0 && index < factura.length) {
+        var productoCancelado = factura.splice(index, 1)[0];
+        actualizarTotal();
+        $('#productosTable tr').eq(index).remove();
+      }
+    }
+
+    $('#agregarProducto').click(function() {
+      var producto = $('#rol').val();
+      var cantidad = $('#cantidad').val();
+      var precio = $('#precio').val();
+
+      if (producto && cantidad && precio) {
+        var subtotal = parseFloat(precio) * parseInt(cantidad);
+        total += subtotal;
+
+        var productoObj = {
+          nombre: producto,
+          cantidad: cantidad,
+          precio: precio,
+          subtotal: subtotal
+        };
+
+        factura.push(productoObj);
+
+        var cancelarBtn = $('<button type="button" class="btn btn-danger btn-sm">Cancelar</button>');
+        cancelarBtn.click(function() {
+          var index = $(this).closest('tr').index();
+          cancelarProducto(index);
+        });
+
+        var row = $('<tr>').append(
+          $('<td>').text(producto),
+          $('<td>').text(cantidad),
+          $('<td>').text(precio),
+          $('<td>').append(cancelarBtn)
+        );
+
+        $('#productosTable').append(row);
+
+        $('#rol').val('');
+        $('#cantidad').val('');
+        $('#precio').val('');
+
+        $('#total').text(total.toFixed(2));
+      }
+    });
+
+    $('#generarFactura').click(function() {
+      if (factura.length > 0) {
+        var formData = {
+          productos: factura.map(function(item) { return item.nombre; }),
+          cantidades: factura.map(function(item) { return item.cantidad; }),
+          precios: factura.map(function(item) { return item.precio; })
+        };
+
+        $.post('factura.php', formData, function(response) {
+          $('#facturaContainer').html(response);
+        });
+      }
+    });
+
+    // Obtener el precio cuando se selecciona un producto
+    $('#rol').change(function() {
+      var idProducto = $(this).val();
+      obtenerPrecioProducto(idProducto);
+    });
+  });
+</script>
+</head>
+
 <?php
-// Archivo: facturar.php
-
-// Incluir el archivo de configuración de la base de datos
-require_once 'config.php';
-
-// Verificar si se envió el formulario de facturación
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recuperar los datos del formulario
-    $clienteId = $_POST['cliente'];
-    $productos = $_POST['productos'];
-    $cantidades = $_POST['cantidades'];
-
-    // Calcular el total de la factura
-    $totalFactura = 0;
-    foreach ($productos as $key => $producto) {
-        $cantidad = $cantidades[$key];
-        $precio = obtenerPrecioProducto($producto);
-        $subtotal = $precio * $cantidad;
-        $totalFactura += $subtotal;
-    }
-
-    // Generar un número de factura único
-    $numeroFactura = generarNumeroFactura();
-
-    // Insertar la información de la factura en la tabla 'factura'
-    $fechaFactura = date('Y-m-d H:i:s');
-    $usuarioId = 1; // Almacena el valor constante en una variable
-    $query = "INSERT INTO factura (nofactura, fecha, usuario, codcliente, totalfactura) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('isiii', $numeroFactura, $fechaFactura, $usuarioId, $clienteId, $totalFactura);
-    $stmt->execute();
-    $stmt->close();
-
-    // Insertar los detalles de la factura en la tabla 'detallefactura'
-    foreach ($productos as $key => $producto) {
-        $cantidad = $cantidades[$key];
-        $precio = obtenerPrecioProducto($producto);
-        $preciototal = $precio * $cantidad;
-
-        $query = "INSERT INTO detallefactura (nofactura, codproducto, cantidad, preciototal) VALUES (?, ?, ?, ?)";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param('iiid', $numeroFactura, $producto, $cantidad, $preciototal);
-        $stmt->execute();
-        $stmt->close();
-
-        // Actualizar la existencia del producto en la tabla 'producto'
-        actualizarExistenciaProducto($producto, $cantidad);
-    }
-
-    // Redireccionar a una página de éxito o mostrar un mensaje de éxito
-    header('Location: factura_exitosa.php');
-    exit();
-}
-
-// Obtener la lista de clientes desde la base de datos
-$query = "SELECT idcliente, nombre FROM cliente";
-$resultado = $mysqli->query($query);
-$clientes = $resultado->fetch_all(MYSQLI_ASSOC);
-
-// Obtener la lista de productos desde la base de datos
-$query = "SELECT codproducto, descripcion FROM producto";
-$resultado = $mysqli->query($query);
-$productos = $resultado->fetch_all(MYSQLI_ASSOC);
-
-// Función para obtener el precio de un producto desde la base de datos
-function obtenerPrecioProducto($productoId)
-{
-    global $mysqli;
-    $query = "SELECT precio FROM producto WHERE codproducto = ?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('i', $productoId);
-    $stmt->execute();
-    $stmt->bind_result($precio);
-    $stmt->fetch();
-    $stmt->close();
-
-    return $precio;
-}
-
-// Función para generar un número de factura único
-function generarNumeroFactura()
-{
-    // Implementa la lógica para generar un número de factura único
-    // Puedes usar la función uniqid() para generar un ID único basado en la hora actual
-    // y luego retornar el número de factura formateado según tus necesidades.
-}
-
-// Función para actualizar la existencia de un producto en la base de datos
-function actualizarExistenciaProducto($productoId, $cantidad)
-{
-    global $mysqli;
-    $query = "UPDATE producto SET existencia = existencia - ? WHERE codproducto = ?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('ii', $cantidad, $productoId);
-    $stmt->execute();
-    $stmt->close();
-}
+include("bd.php");
+// código para mostrar registros
+$sentencia = $conexion->prepare("SELECT * FROM `producto`");
+$sentencia->execute();
+$lista_tbl_producto = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- Archivo: factura.php (HTML + PHP) -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Facturación</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
-    <style>
-        .total-factura {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
-</head>
 <body>
-    <div class="container mt-5">
-        <h1>Facturación</h1>
-        <form method="POST" action="facturar.php">
-            <div class="mb-3">
-                <label for="cliente" class="form-label">Cliente:</label>
-                <select id="cliente" name="cliente" class="form-select" required>
-                    <?php foreach ($clientes as $cliente): ?>
-                        <option value="<?php echo $cliente['idcliente']; ?>"><?php echo $cliente['nombre']; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Productos:</label>
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="producto1" class="form-label">Producto 1:</label>
-                        <select id="producto1" name="productos[]" class="form-select" required>
-                            <?php foreach ($productos as $producto): ?>
-                                <option value="<?php echo $producto['codproducto']; ?>"><?php echo $producto['descripcion']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="cantidad1" class="form-label">Cantidad:</label>
-                        <input type="number" id="cantidad1" name="cantidades[]" class="form-control" min="1" required>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="button" class="btn btn-success mt-4" onclick="agregarProducto()">Agregar</button>
-                    </div>
-                </div>
-                <div id="productos-agregados" class="mt-3"></div>
-            </div>
-            <div class="total-factura">Total: <span id="total-factura">0</span></div>
-            <button type="submit" class="btn btn-primary mt-3">Facturar</button>
-        </form>
+  <div class="container">
+    <h1 class="text-center">Facturación</h1>
+
+    <div class="mb-3">
+      <label for="rol" class="form-label">Producto</label>
+      <select class="form-select form-select-lg" name="rol" id="rol">
+
+        <?php foreach ($lista_tbl_producto as $registro) { ?>
+
+          <option value="<?php echo $registro['idproducto'] ?>">
+            <?php echo $registro['descripcion'] ?></option>
+
+        <?php } ?>
+      </select>
     </div>
 
-    <script>
-        var contadorProductos = 1;
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Cantidad:</label>
+      <input type="number" class="form-control" id="cantidad" min="1" required>
+    </div>
+    <div class="mb-3">
+      <label for="precio" class="form-label">Precio:</label>
+      <input type="number" class="form-control" id="precio" min="0" step="0.01" required readonly>
+    </div>
 
-        function agregarProducto() {
-            var productosSelect = document.getElementById('producto1');
-            var cantidadInput = document.getElementById('cantidad1');
-            var productosAgregadosDiv = document.getElementById('productos-agregados');
-            var totalFacturaSpan = document.getElementById('total-factura');
+    <button type="button" id="agregarProducto" class="btn btn-primary">Agregar producto</button>
+    <button type="button" id="generarFactura" class="btn btn-primary">Generar Factura</button>
 
-            var productoSeleccionado = productosSelect.value;
-            var cantidadSeleccionada = cantidadInput.value;
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="productosTable"></tbody>
+    </table>
 
-            // Validar que se haya seleccionado un producto y especificado una cantidad
-            if (productoSeleccionado !== '' && cantidadSeleccionada > 0) {
-                var productoHTML = '<div class="row">' +
-                    '<div class="col-md-4">' +
-                    '<input type="hidden" name="productos[]" value="' + productoSeleccionado + '">' +
-                    productosSelect.options[productosSelect.selectedIndex].text +
-                    '</div>' +
-                    '<div class="col-md-4">' +
-                    '<input type="hidden" name="cantidades[]" value="' + cantidadSeleccionada + '">' +
-                    cantidadSeleccionada +
-                    '</div>' +
-                    '<div class="col-md-4">' +
-                    '<button type="button" class="btn btn-danger mt-1" onclick="eliminarProducto(this)">Eliminar</button>' +
-                    '</div>' +
-                    '</div>';
+    <div class="d-flex justify-content-end">
+      <h4>Total: <span id="total">0.00</span></h4>
+    </div>
 
-                productosAgregadosDiv.innerHTML += productoHTML;
-
-                // Actualizar el total de la factura
-                var precio = obtenerPrecioProducto(productoSeleccionado);
-                var subtotal = precio * cantidadSeleccionada;
-                var totalFactura = parseFloat(totalFacturaSpan.innerText);
-                totalFactura += subtotal;
-                totalFacturaSpan.innerText = totalFactura.toFixed(2);
-
-                // Reiniciar los valores del formulario
-                productosSelect.selectedIndex = 0;
-                cantidadInput.value = '';
-
-                contadorProductos++;
-            }
-        }
-
-        function eliminarProducto(btnEliminar) {
-            var filaProducto = btnEliminar.parentNode.parentNode;
-            filaProducto.parentNode.removeChild(filaProducto);
-
-            // Actualizar el total de la factura
-            var totalFacturaSpan = document.getElementById('total-factura');
-            var subtotal = parseFloat(filaProducto.childNodes[1].innerText) * parseFloat(filaProducto.childNodes[3].value);
-            var totalFactura = parseFloat(totalFacturaSpan.innerText);
-            totalFactura -= subtotal;
-            totalFacturaSpan.innerText = totalFactura.toFixed(2);
-        }
-    </script>
+    <div id="facturaContainer"></div>
+  </div>
 </body>
+
 </html>

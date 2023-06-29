@@ -47,8 +47,8 @@ $lista_tbl_proveedor=$sentancia->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="mb-3">
-                    <label for="rol" class="form-label">Proveedor</label>
-                    <select class="form-select form-select-lg" name="rol" id="rol">
+                    <label for="proveedor" class="form-label">Proveedor</label>
+                    <select class="form-select form-select-lg" name="proveedor" id="proveedor">
 
                     <?php foreach ($lista_tbl_proveedor as $registro) {?>
                     <option value="<?php echo $registro['idproveedor'] ?>">

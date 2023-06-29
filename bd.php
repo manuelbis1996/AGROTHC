@@ -1,4 +1,5 @@
 <?php
+//bd.php
 $servidor = "localhost";
 $baseDeDatos = "agrothc";
 $usuario = "root";
