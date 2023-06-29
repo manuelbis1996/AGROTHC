@@ -44,7 +44,7 @@ if($_POST){
 
     <div class="card">
         <div class="card-header">
-            Datos del Proveedor
+            Editar proveedor
         </div>
 
         <div class="card-body">
@@ -81,7 +81,7 @@ if($_POST){
 
                 
 
-                <button type="submit" class="btn btn-success">Agregar articulos</button>
+                <button type="submit" class="btn btn-success">Editar proveedor</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

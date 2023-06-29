@@ -47,7 +47,7 @@ header("Location:index.php");
 
     <div class="card">
         <div class="card-header">
-            Datos del clientes
+            Editar clientes
         </div>
 
         <div class="card-body">
@@ -83,7 +83,7 @@ header("Location:index.php");
                     class="form-control" name="direccion" id="direccion" aria-describedby="helpId" placeholder="Direccion">
                 </div>
 
-                <button type="submit" class="btn btn-success">Agregar artigulos</button>
+                <button type="submit" class="btn btn-success">Editar cliente</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

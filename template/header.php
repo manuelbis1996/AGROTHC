@@ -1,8 +1,16 @@
 <?php
 $url_base="http://localhost/AGROTHC/";
+
 session_start();
 
+if(!isset($_SESSION['usuario'])){
+    header("location:".$url_base."login.php");
+}
+else{
+    
+}
 ?>
+
 
 <!doctype html>
 <html lang="es">

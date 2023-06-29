@@ -38,7 +38,7 @@ if($_POST){
 
     <div class="card">
         <div class="card-header">
-            Datos del rol
+            Editar rol
         </div>
 
         <div class="card-body">
@@ -63,7 +63,7 @@ if($_POST){
 
 
 
-                <button type="submit" class="btn btn-success">Actualizar puesto</button>
+                <button type="submit" class="btn btn-success">Editar rol</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

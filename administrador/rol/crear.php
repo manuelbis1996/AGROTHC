@@ -23,7 +23,7 @@ header("Location:index.php");
 
     <div class="card">
         <div class="card-header">
-            Datos del rol
+            Agregar rol
         </div>
 
         <div class="card-body">
@@ -38,7 +38,7 @@ header("Location:index.php");
 
 
 
-                <button type="submit" class="btn btn-success">Agregar puesto</button>
+                <button type="submit" class="btn btn-success">Agregar rol</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

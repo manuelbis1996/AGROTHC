@@ -31,7 +31,7 @@ header("Location:index.php");
 
     <div class="card">
         <div class="card-header">
-            Datos del Proveedor
+            Agregar proveedor
         </div>
 
         <div class="card-body">
@@ -58,7 +58,7 @@ header("Location:index.php");
 
                 
 
-                <button type="submit" class="btn btn-success">Agregar articulos</button>
+                <button type="submit" class="btn btn-success">Agregar proveedor</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

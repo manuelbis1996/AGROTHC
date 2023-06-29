@@ -47,7 +47,7 @@ if($_POST){
 
     <div class="card">
         <div class="card-header">
-            Datos del producto
+            Editar producto
         </div>
 
         <div class="card-body">
@@ -89,7 +89,7 @@ if($_POST){
                     class="form-control" name="existencia" id="existencia" aria-describedby="helpId" placeholder="">
                 </div>
 
-                <button type="submit" class="btn btn-success">Actualizar articulos</button>
+                <button type="submit" class="btn btn-success">Editar producto</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>

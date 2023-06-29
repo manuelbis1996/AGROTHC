@@ -23,7 +23,7 @@ $sentencia->execute();
 $registro=$sentencia->fetch(PDO::FETCH_LAZY);
 
 if($registro["n_usuario"]>0){
-    $_SESSION["usuario"]=$registro["usuario"];
+    $_SESSION["usuario"]=$registro["nombre"];
     $_SESSION["logueado"]=true;
     header("location:index.php");
 }
@@ -78,7 +78,7 @@ else{
                             </div>
                         
                         <?php } ?>
-                        
+
                         <form action="" method="post">
 
                             <div class="mb-3">

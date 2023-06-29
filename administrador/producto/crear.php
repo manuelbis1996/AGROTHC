@@ -34,7 +34,7 @@ $lista_tbl_proveedor=$sentancia->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="card">
         <div class="card-header">
-            Datos del producto
+            Agregar del producto
         </div>
 
         <div class="card-body">
@@ -72,7 +72,7 @@ $lista_tbl_proveedor=$sentancia->fetchAll(PDO::FETCH_ASSOC);
                         class="form-control" name="existencia" id="existencia" aria-describedby="helpId" placeholder="Existencia">   
                 </div>
 
-                <button type="submit" class="btn btn-success">Agregar articulos</button>
+                <button type="submit" class="btn btn-success">Agregar producto</button>
                 <a name="" id="" class="btn btn-primary" href="index.php" role="button">Cancelar</a>
             
             </form>
